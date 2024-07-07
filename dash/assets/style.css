@@ -1,0 +1,21 @@
+.rectangle-div {
+  width: 100%;
+  position: relative;
+  background-color: #dcf9dd;
+  height: 255px;
+}
+
+.districts {
+  margin: 0;
+}
+
+.districts-2030-districts-container {
+  width: 421px;
+  position: relative;
+  font-size: 16px;
+  color: #000;
+  text-align: center;
+  display: inline-block;
+  height: 214px;
+  font-family: Inter;
+}

@@ -1,0 +1,45 @@
+import pandas as pd
+import plotly.express as px
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+
+# File path
+file_path = "~/Desktop/ESW/Autumn Leaves/Autumn Leaves Used Books.xlsx - ENERGYDATA.csv"
+
+# Read CSV into DataFrame
+edited_df = pd.read_csv(file_path)
+
+# Delete the first three rows
+edited_df = edited_df.iloc[3:]
+
+# Delete the 7th and 13th columns
+edited_df = edited_df.drop(columns=[edited_df.columns[6], edited_df.columns[12]])
+
+# Filter DataFrame to include only "Electric" and "Natural Gas" sources
+filtered_df = edited_df[edited_df.iloc[:, 4].isin(['Electric', 'Natural Gas'])]
+
+# Calculate proportions
+total_count = len(filtered_df)
+electric_count = len(filtered_df[filtered_df.iloc[:, 4] == 'Electric'])
+natural_gas_count = len(filtered_df[filtered_df.iloc[:, 4] == 'Natural Gas'])
+
+electric_proportion = electric_count / total_count
+natural_gas_proportion = natural_gas_count / total_count
+
+# Create Pie Chart
+labels = ['Electric', 'Natural Gas', 'Grand Total']
+values = [electric_proportion, natural_gas_proportion]
+
+fig = px.pie(values=values, names=labels, title='Energy Source Breakdown for Selected Years')
+
+# Dash App
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Graph(figure=fig)
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
